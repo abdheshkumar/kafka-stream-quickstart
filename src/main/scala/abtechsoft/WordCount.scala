@@ -1,12 +1,13 @@
 package abtechsoft
 
-import java.{lang, util}
 import java.util.Properties
 
 import org.apache.kafka.common.serialization.Serdes
-import org.apache.kafka.streams.{Consumed, StreamsBuilder, StreamsConfig}
-import org.apache.kafka.streams.kstream.{KeyValueMapper, Produced, ValueMapper}
-import Implicits._
+import org.apache.kafka.streams.kstream._
+import org.apache.kafka.streams.{StreamsBuilder, StreamsConfig}
+//import Implicits._
+import scala.collection.JavaConverters._
+
 object WordCount extends App {
   val bootstrapServers = "localhost:9092"
   val builder = new StreamsBuilder
@@ -29,13 +30,11 @@ object WordCount extends App {
   // in the message keys).
   val textLines = builder.stream("streams-plaintext-input", Consumed.`with`(stringSerde, stringSerde))
 
-  val wordCounts = textLines
+  val wordCounts: KTable[String, java.lang.Long] = textLines
     // Split each text line, by whitespace, into words.
-    .flatMapValues(value=> util.Arrays.asList(value.toLowerCase().split("\\W+")))
-    //.groupBy((key: String, value: String) => value)
+    .flatMapValues(value => value.toLowerCase().split("\\W+").toBuffer.asJava)
     // Group the text words as message keys
-    //.groupBy((key, value) -> value)
-
+    .groupBy((_, value) => value)
     // Count the occurrences of each word (message key).
     .count()
 
