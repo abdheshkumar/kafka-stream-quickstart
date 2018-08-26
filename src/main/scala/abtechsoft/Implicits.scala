@@ -15,4 +15,6 @@ object Implicits {
   implicit def BinaryKeyValueMapper[K, V, VR](f: (K, V) => VR): KeyValueMapper[K, V, VR] = (k: K, v: V) => f(k, v)
 
   implicit def Tuple2ToKeyValue[K, V](tuple: (K, V)): KeyValue[K, V] = new KeyValue(tuple._1, tuple._2)
+
+  implicit def valueMapper[V, VR](f: V => VR): ValueMapper[V, VR] = (value: V) => f(value)
 }
