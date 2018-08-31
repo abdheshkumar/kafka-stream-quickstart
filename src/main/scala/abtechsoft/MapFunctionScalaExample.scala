@@ -8,35 +8,35 @@ import org.apache.kafka.streams.{KafkaStreams, KeyValue, StreamsBuilder, Streams
 import Implicits._
 
 /**
-  * 1) Create the input and output topics used by this example.
-  * {{
-  * $ bin/kafka-topics.sh --create --topic TextLinesTopic --zookeeper localhost:2181 --partitions 1 --replication-factor 1
-  * $ bin/kafka-topics.sh --create --topic UppercasedTextLinesTopic --zookeeper localhost:2181 --partitions 1 --replication-factor 1
-  * $ bin/kafka-topics.sh --create --topic OriginalAndUppercasedTopic --zookeeper localhost:2181 --partitions 1 --replication-factor 1
-  * }}}
-  *
-  * 2) Write some input data to the source topics (e.g. via `kafka-console-producer`.  The already
-  * running example application (step 3) will automatically process this input data and write the
-  * results to the output topics.
-  *
-  * {{{
-  * # Start the console producer.  You can then enter input data by writing some line of text,
-  * # followed by ENTER:
-  * #
-  * #   hello kafka streams<ENTER>
-  * #   all streams lead to kafka<ENTER>
-  * #
-  * # Every line you enter will become the value of a single Kafka message.
-  * $ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic TextLinesTopic
-  * }}}
-  *
-  * 3) Inspect the resulting data in the output topics, e.g. via `kafka-console-consumer`.
-  *
-  * {{{
-  * $ bin/kafka-console-consumer.sh --new-consumer --bootstrap-server localhost:9092 --topic UppercasedTextLinesTopic --from-beginning
-  * $ bin/kafka-console-consumer.sh --new-consumer --bootstrap-server localhost:9092 --topic OriginalAndUppercasedTopic --from-beginning  --property print.key=true
-  * }}}
-  */
+ * 1) Create the input and output topics used by this example.
+ * {{
+ * $ bin/kafka-topics.sh --create --topic TextLinesTopic --zookeeper localhost:2181 --partitions 1 --replication-factor 1
+ * $ bin/kafka-topics.sh --create --topic UppercasedTextLinesTopic --zookeeper localhost:2181 --partitions 1 --replication-factor 1
+ * $ bin/kafka-topics.sh --create --topic OriginalAndUppercasedTopic --zookeeper localhost:2181 --partitions 1 --replication-factor 1
+ * }}}
+ *
+ * 2) Write some input data to the source topics (e.g. via `kafka-console-producer`.  The already
+ * running example application (step 3) will automatically process this input data and write the
+ * results to the output topics.
+ *
+ * {{{
+ * # Start the console producer.  You can then enter input data by writing some line of text,
+ * # followed by ENTER:
+ * #
+ * #   hello kafka streams<ENTER>
+ * #   all streams lead to kafka<ENTER>
+ * #
+ * # Every line you enter will become the value of a single Kafka message.
+ * $ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic TextLinesTopic
+ * }}}
+ *
+ * 3) Inspect the resulting data in the output topics, e.g. via `kafka-console-consumer`.
+ *
+ * {{{
+ * $ bin/kafka-console-consumer.sh --new-consumer --bootstrap-server localhost:9092 --topic UppercasedTextLinesTopic --from-beginning
+ * $ bin/kafka-console-consumer.sh --new-consumer --bootstrap-server localhost:9092 --topic OriginalAndUppercasedTopic --from-beginning  --property print.key=true
+ * }}}
+ */
 object MapFunctionScalaExample extends App {
   val bootstrapServers = "localhost:9092"
   val builder = new StreamsBuilder
@@ -73,7 +73,6 @@ object MapFunctionScalaExample extends App {
   //
   //    map((key, value) => new KeyValue(key, value.toUpperCase())
   //
-
 
   // Variant 2: using `map`, modify value only (equivalent to variant 1)
   val uppercasedWithMap: KStream[Array[Byte], String] = textLines.map((key, value) => (key, value.toUpperCase()))
