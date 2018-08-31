@@ -1,5 +1,6 @@
 package abtechsoft
 
+import java.time.Duration
 import java.util
 import java.util.Properties
 
@@ -14,15 +15,15 @@ object ConsumerApp extends App {
   val TOPIC = "test1"
 
   val props = new Properties()
-  props.put("bootstrap.servers", "10.0.0.72:9092")
+  props.put("bootstrap.servers", "0.0.0.0:9092")
   props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
   props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
-  props.put("group.id", "something2")
+  props.put("group.id", "something3")
   //props.put("auto.offset.reset", "earliest")
 
   val consumer = new KafkaConsumer[String, String](props)
 
-  consumer.subscribe(util.Collections.singletonList(TOPIC), new RebalanceListner)
+  consumer.subscribe(util.Collections.singletonList(TOPIC))
   while (true) {
     val records = consumer.poll(1000000)
     for (record <- records.asScala) {
