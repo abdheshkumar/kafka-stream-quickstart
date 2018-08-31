@@ -23,7 +23,7 @@ object ProducerApp extends App {
     println(":::::d::::")
     val record = new ProducerRecord[String, String](TOPIC, i.toString, s"hello $i")
     println(s":::::d${i}::::")
-   val a = producer.send(record).get()
+    val a = producer.send(record).get()
     println(a)
   }
 

@@ -9,7 +9,7 @@ val `kafka-stream-quickstart` = Project("kafka-stream-quickstart", file("."))
   .settings(
     name := "kafka-stream-quickstart",
     version := "0.1",
-    scalaVersion := "2.12.4",
+    scalaVersion := "2.12.6",
     scalafmtOnCompile := true,
     libraryDependencies ++= Seq(
       "org.apache.kafka" % "kafka-clients" % "2.0.0",

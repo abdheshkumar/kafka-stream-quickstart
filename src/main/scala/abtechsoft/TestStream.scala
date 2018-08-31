@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 object TestStream extends App {
-  def start(): Future[Unit] = Future{
+  def start(): Future[Unit] = Future {
 
     val builder = new StreamsBuilder()
     val config = {

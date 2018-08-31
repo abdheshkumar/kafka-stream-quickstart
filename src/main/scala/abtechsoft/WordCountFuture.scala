@@ -25,7 +25,7 @@ object WordCountFuture extends App {
     settings
   }
 
-  def topology(builder: StreamsBuilder) = {
+  def topology(builder: StreamsBuilder): Future[Unit] = Future {
     val stringSerde = Serdes.String()
     val longSerde = Serdes.Long()
     val textLines = builder.stream("streams-plaintext-input", Consumed.`with`(stringSerde, stringSerde))
@@ -36,17 +36,17 @@ object WordCountFuture extends App {
     wordCounts.toStream().to("streams-wordcount-output", Produced.`with`(stringSerde, longSerde))
   }
 
-
   val streams: Future[KafkaStreams] = for {
     props <- streamingConfig
     builder <- createBuilder
+    _ <- topology(builder)
   } yield new KafkaStreams(builder.build(), props)
 
   val result = Await.result(streams, Duration.Inf)
   result.start()
   println("Kafka streaming started...")
   sys.ShutdownHookThread {
-    println("ShutdownHookThread called...")
     result.close(10, TimeUnit.SECONDS)
+    println("Kafka streaming stopped...")
   }
 }

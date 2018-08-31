@@ -30,11 +30,11 @@ object WordCount extends App {
     .count()
   wordCounts.toStream().to("streams-wordcount-output", Produced.`with`(stringSerde, longSerde))
 
-
   val streams = new KafkaStreams(builder.build(), streamingConfig)
   streams.start()
   println("Kafka streaming started...")
   sys.ShutdownHookThread {
     streams.close(10, TimeUnit.SECONDS)
+    println("Kafka streaming stopped...")
   }
 }
