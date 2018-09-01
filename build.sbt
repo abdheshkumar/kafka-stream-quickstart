@@ -1,9 +1,11 @@
 import sbt.Keys.scalaVersion
 
+/*
 val workaround = {
   sys.props += "packaging.type" -> "jar"
   ()
 }
+*/
 
 val `kafka-stream-quickstart` = Project("kafka-stream-quickstart", file("."))
   .settings(
